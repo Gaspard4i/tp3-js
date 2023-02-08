@@ -22,7 +22,7 @@ _**Dans cette partie du TP nous allons faire un peu de POO pour essayer d'améli
 
 
 ## D.1. Notre problème
-_**Dans la partie B. du TP qu'on vient de terminer, on a beaucoup amélioré l'organisation de notre code en le répartissant dans différents fichiers, mais on a quand même encore un problème.**_
+_**Dans la partie C. du TP qu'on vient de terminer, on a beaucoup amélioré l'organisation de notre code en le répartissant dans différents fichiers, mais on a quand même encore un problème.**_
 
 En fait, le principe des modules c'est normalement d'avoir **des fichiers JS qui puissent être réutilisables facilement** sur d'autres projets.
 
