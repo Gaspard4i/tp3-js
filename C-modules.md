@@ -149,7 +149,7 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 
 5. **Passez enfin les fonctions `toggleSearchForm` et `handleSearchFormSubmit` dans le module `src/GameListView.js`** créé précédemment.
 
-	Rechargez la page dans votre navigateur et tentez d'afficher le formulaire de recherche : **une erreur se déclenche :**
+	Rechargez la page dans votre navigateur, **puis cliquez sur le bouton "loupe"** pour essayer d'afficher le formulaire de recherche : **une erreur se déclenche :**
 
 	<img src="images/readme/module-referenceerror.png">
 
