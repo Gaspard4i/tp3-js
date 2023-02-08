@@ -85,7 +85,7 @@ Cliquez simplement à gauche d'un numéro de ligne, et une puce rouge s'affiche 
 
 <img src="images/readme/vscode-breakpoint.png" >
 
-1. **Pour tester ça, ajoutez un point d'arrêt ligne 67 comme sur la capture ci-dessus.**
+1. **Pour tester ça, ajoutez un point d'arrêt ligne 92 comme sur la capture ci-dessus.**
 
 2. **Dans Chrome, cliquez sur le bouton "loupe"** (_celui qui doit afficher le formulaire de recherche_).
 
