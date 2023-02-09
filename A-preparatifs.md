@@ -84,4 +84,4 @@ Comme dans le précédent TP lancez un serveur HTTP et la compilation du projet 
 **Attention : si vous n'aviez pas eu le temps de terminer le TP2**, portez une attention toute particulière à la fonction `renderGameList` en toute fin du fichier `main.js` ([l.132-159](https://gitlab.univ-lille.fr/js/tp3/-/blob/main/src/main.js#L132-159)): c'est cette fonction qui est appelée au chargement du site ([l.162](https://gitlab.univ-lille.fr/js/tp3/-/blob/main/src/main.js#L162)) mais aussi lorsque l'utilisateur.rice soumet le formulaire de recherche ([l.114](https://gitlab.univ-lille.fr/js/tp3/-/blob/main/src/main.js#L114)).
 
 ## Étape suivante <!-- omit in toc -->
-Maintenant que votre code compile, vous pouvez passer à l'étape suivante : [B. Les bases de l'API DOM](B-les-bases.md)
+Maintenant que votre code compile, vous pouvez passer à l'étape suivante : 2. [B. Debugger dans vscode](B-debug-vscode.md)
