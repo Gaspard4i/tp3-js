@@ -120,7 +120,7 @@ Cliquez simplement à gauche d'un numéro de ligne, et une puce rouge s'affiche 
 
 	Vous pouvez ainsi survoler la constante `myBuggyElement` pour constater qu'elle vaut `null` et que c'est la raison du plantage !
 
-**Une fois que vous avez testé ça, pensez à enlever le point d'arrêt de la ligne 67 !**
+**Une fois que vous avez testé ça, pensez à enlever le point d'arrêt de la ligne 92 !**
 
 > _**NB1 :** même si vous utilisez le debug dans vscode, **les devtools de Chrome continuent de fonctionner** et sont même **synchronisés avec vscode** (les actions dans une interface se répercutent dans l'autre !)_
 
