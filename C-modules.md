@@ -44,9 +44,9 @@ console.log( vehicle ); // 'The RV'
 ```
 
 Les export nommés diffèrent des `export default` parce que :
-- on peut avoir plusieurs exports nommés mais un seul export default
-- pour importer une valeur exportée avec un export nommé, on est obligé de mettre des accolades autour du nom de la variable dans l'import
-- on est obligés d'écrire le nom de la variable qu'on importe EXACTEMENT comme elle est écrite dans le module qui exporte (pas de faute de frappe, même casse, etc.), alors que pour les `export default` on peut importer en mettant n'importe quel nom (_le nom de l'export est en fait "default"_)
+- on peut avoir plusieurs exports "nommés" mais **un seul export "default"**
+- pour importer une valeur exportée avec un export nommé, on est obligé de mettre des **accolades** autour du nom de la variable dans l'import
+- on est obligés d'écrire le nom de la variable qu'on importe **EXACTEMENT** comme elle est écrite dans le module qui exporte (_pas de faute de frappe, même casse, etc._), alors que pour les `export default` on peut importer en mettant n'importe quel nom (_le nom de l'export est en fait "default"_)
 
 Le [support navigateur des modules ES6](https://caniuse.com/#feat=es6-module) est plutôt bon (_peut-être un peu juste certaines applications qui nécessiteraient le support de IE et android 4.4_) :
 
