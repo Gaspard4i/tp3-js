@@ -51,8 +51,8 @@ On voit bien en faisant ça que le lien du menu "Support" ne se sélectionne pas
 Pour régler ce problème vous allez :
 - rajouter une propriété statique privée `menuElement` dans la classe `Router`
 - créer une méthode statique `setMenuElement()` dans la classe `Router`
-- dans le `main.js` appelez cette nouvelle méthode `Router.setMenuElement()` en lui envoyant `document.querySelector('.mainMenu')`
-- à l'intérieur de la méthode `setMenuElement` écoutez le clic sur tous les liens contenus dans `menuElement` de manière à pouvoir supprimer les deux lignes suivantes du `main.js` :
+- dans le `main.js` appeler cette nouvelle méthode `Router.setMenuElement()` en lui envoyant `document.querySelector('.mainMenu')`
+- à l'intérieur de la méthode `setMenuElement` écouter le clic sur tous les liens contenus dans `menuElement` de manière à pouvoir supprimer les deux lignes suivantes du `main.js` :
 
 	```js
 	const menuLinks = document.querySelectorAll('.mainMenu a');

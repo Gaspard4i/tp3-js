@@ -6,7 +6,7 @@ _**Notre application JSteam a pas mal progressé lors du précédent TP (navigat
 
 Malheureusement toutes ces fonctionnalités ont été rajoutées dans le seul fichier `main.js` : **ça commence par conséquent à être un peu le "bazar" puisque tout est mélangé.**
 
-**L'objectif de ce chapitre va être de nous permettre de mieux organiser notre code en le répartissant dans plusieurs fichiers grâces aux modules ES6.**
+**L'objectif de ce chapitre va être de nous permettre de mieux organiser notre code en le répartissant dans plusieurs fichiers grâce aux modules ES6.**
 
 ## Sommaire <!-- omit in toc -->
 - [C.1. Rappels](#c1-rappels)
@@ -31,7 +31,7 @@ import vehicle from './vehicle.js';
 console.log( vehicle ); // 'The RV'
 ```
 
-Dans l'exemple ci-dessus on utilise un **export par défaut** (_`export default ...`_) mais il existe un deuxième type d'export : les **exports nommés** (_`named exports` en anglais_). \
+Dans l'exemple ci-dessus, on utilise un **export par défaut** (_`export default ...`_) mais il existe un deuxième type d'export : les [**exports nommés** (_mdn_)](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Statements/export#description) (_`named exports` en anglais_). \
 Si l'on réécrit l'exemple ci-dessus avec un export nommé cela donnera :
 ```js
 // vehicle.js
@@ -80,9 +80,9 @@ Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec le
 	```
 	Pour prendre en compte la nouvelle configuration de Babel, **stoppez (<kbd>CTRL</kbd>+<kbd>C</kbd>) puis relancez** la compilation à l'aide de la commande `npm run watch`
 
-3. Si pour les modules avec webpack (cf. suite du TP) on peut omettre l'extension du fichier qu'on importe, ce n'est pas le cas avec les modules "dans le navigateur" comme on s'apprête à le faire : il faut obligatoirement préciser à chaque `import ... from ...` l'extension `.js` après le nom du fichier.
+3. Si pour les modules avec webpack (_cf. suite du TP_) on peut omettre l'extension du fichier qu'on importe, ce n'est pas le cas avec les modules "dans le navigateur" comme on s'apprête à le faire : il faut **obligatoirement préciser à chaque `import ... from ...` l'extension `.js` après le nom du fichier**.
 
-	Pour que vscode vous aide à créer les instructions import correctement, ajoutez la clé `"javascript.preferences.importModuleSpecifierEnding"` dans votre fichier `.vscode/settings.json` (_créé au précédent TP_) comme ceci (_attention à la virgule sur la ligne précédente_) :
+	Pour que vscode vous aide à créer les instructions import correctement, **ajoutez la clé `"javascript.preferences.importModuleSpecifierEnding"` dans votre fichier `.vscode/settings.json`** (_créé au précédent TP_) comme ceci (_attention à la virgule sur la ligne précédente_) :
 
 	```diff
 	{
@@ -98,7 +98,7 @@ Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec le
 
 4.  **Créez votre premier module en externalisant la constante `data` dans un module ES6 distinct `src/data.js`.**
 
-	> _**NB1 :** Rappelez vous : tout ce qui est défini dans un module (variables, fonctions, classes), n'existe qu'à l'intérieur de ce module **SAUF** s'il est exporté, puis importé dans un autre fichier._
+	> _**NB1 :** Rappelez-vous : tout ce qui est défini dans un module (variables, fonctions, classes), n'existe qu'à l'intérieur de ce module **SAUF** s'il est exporté, puis **importé** dans un autre fichier._
 
 	> _**NB2 :** Exporter **par défaut** une constante sur la même ligne que sa création est interdit (cf. la Bible : [stackoverflow](https://stackoverflow.com/a/36261387)):_
 	> ```js
@@ -110,7 +110,7 @@ Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec le
 	> export default data; // OK !
 	> ```
 
-	> _**NB3 :** Un export simple (pas par défaut, on parle d'[export nommé (mdn)](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Statements/export#description)) d'une const est en revanche autorisé :_
+	> _**NB3 :** Un export nommé (pas par défaut) d'une const est en revanche autorisé :_
 	> ```js
 	> export const data = [...]; // OK !
 	> ```
@@ -145,7 +145,7 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 3. **la fonction `renderGameThumbnail` dans un module `src/renderGameThumbnail.js`** (_export default_)
 4. **la fonction `renderGameList` (_export default_) dans un module `src/GameListView.js`**
 
-		> _la fonction renderGameList utilise des informations issues d'autres modules (notamment le tableau `data` et la fonction `renderGameThumbnail`) pensez donc à utiliser les bons import et à faire le ménage des imports désormais inutiles dans le `main.js` !_
+	> _la fonction renderGameList utilise des informations issues d'autres modules (notamment le tableau `data` et la fonction `renderGameThumbnail`) pensez donc à utiliser les bons import et à faire le ménage des imports désormais inutiles dans le `main.js` !_
 
 5. **Passez enfin les fonctions `toggleSearchForm` et `handleSearchFormSubmit` dans le module `src/GameListView.js`** créé précédemment.
 
@@ -155,7 +155,7 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 
 	> _**NB :** si cette erreur n'est pas captée par vscode comme dans la capture ci-dessus, vérifiez que vous avez bien coché la case "Uncaught Exceptions" comme indiqué dans le point [B.2.2. Les points d'arrêt](./B-debug-vscode.md#b22-les-points-darrêt)_)
 
-	En fait cette erreur est logique : on a déplacé dans `GameListView.js` nos 2 fonctions sans remarquer que toutes les deux utilisaient des constantes définies dans le `main.js` : `searchForm` et `toggleSearchButton` (_qui sont 2 Element HTML_)
+	**En fait cette erreur est logique** : on a déplacé dans `GameListView.js` nos 2 fonctions sans remarquer que toutes les deux utilisaient des constantes définies dans le `main.js` : `searchForm` et `toggleSearchButton` (_qui sont 2 Element HTML_)
 
 	On pourrait être tenté d'exporter ces 2 constantes depuis le `main.js` puis de les importer dans `GameListView.js` mais on créerait alors des dépendances croisées entre ces deux fichiers (_`main.js` aurait besoin de `GameListView.js`, et `GameListView.js` aurait besoin de `main.js`_).
 
@@ -182,7 +182,7 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 	> _Ici on ajoute dans notre module des instructions qui vont s'exécuter automatiquement dès qu'on va l'importer, sans que le module appelant (celui dans lequel on a le `import`) ne fasse quoique ce soit : **c'est une mauvaise pratique qu'il ne faut surtout pas réitérer dans la vraie vie et qu'on essaiera de résoudre grâce à la POO dans le prochain chapitre**._
 
 
-	Une fois tous déplacé, ne devraient rester dans votre `main.js` que les lignes suivantes :
+	Une fois tout déplacé, ne devraient rester dans votre `main.js` que les lignes suivantes :
 
 	```js
 	import renderGameList from './GameListView.js';

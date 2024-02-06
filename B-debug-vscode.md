@@ -1,12 +1,12 @@
 <img src="images/readme/header-small.jpg" >
 
-# B. Debugger dans vscode <!-- omit in toc -->
+# E. Debugger dans vscode <!-- omit in toc -->
 
 _**Pour débugger notre code, on a jusqu'ici toujours utilisé les devtools intégrés dans notre navigateur. Mais il faut admettre que ce n'est pas très pratique de devoir passer d'une fenêtre à l'autre notamment quand on utilise les points d'arrêt car on a le _MÊME_ code affiché à 2 endroits différents :**_
 - **dans vscode** (_le code qu'on édite_)
 - **dans les devtools** (_dans l'onglet "Sources"/"Debugger"_)
 
-**Dans ce TP nous allons découvrir comment debugger notre code DIRECTEMENT DANS VSCODE 😱 sans utiliser les devtools !**
+**Dans ce TP nous allons découvrir comment debugger notre code DIRECTEMENT DANS VSCODE 😱 sans avoir besoin des devtools du navigateur !**
 
 ## Sommaire <!-- omit in toc -->
 - [B.1. Configuration](#b1-configuration)
@@ -16,16 +16,16 @@ _**Pour débugger notre code, on a jusqu'ici toujours utilisé les devtools int�
 
 ## B.1. Configuration
 
-**Pour pouvoir debugger directement dans vscode, vscode a besoin d'une instance de Chrome en mode debug, ce qui va lui permettre de communiquer avec les devtools.**
+**Pour pouvoir debugger directement dans vscode, vscode a besoin d'ouvrir un navigateur en mode debug, ce qui va lui permettre de communiquer avec les devtools de ce navigateur.**
 
-> _**NB :** Il est aussi possible d'utiliser Firefox mais la configuration du debug dans Firefox est plus complexe et peut prendre du temps. Si vous n'y êtes pas allergique, je vous conseille d'utiliser chrome qui est configuré par défaut dans vscode._
->
-> _Si vous n'avez pas Chrome et que vous souhaitez utiliser Firefox, alors suivez donc les instructions du fichier [B. Débugger dans vscode : Firefox](./B-debug-vscode-firefox.md) avant de revenir ici_
+Le plus simple est d'utiliser Chrome ou Chromium qui fonctionnent par défaut avec vscode (_config spécifique pour Chromium plus bas dans ce readme_). Il est aussi possible d'utiliser Firefox mais la configuration du debug dans Firefox est plus complexe et peut prendre du temps. Si vous n'y êtes pas allergique, je vous conseille d'utiliser Chrome/Chromium.
 
-**On peut s'amuser à lancer Chrome en mode debug en le lançant en ligne de commande, mais le plus simple c'est de laisser vscode lancer Chrome tout seul, comme un grand.**
+> _Si vous n'avez pas Chrome ni Chromium ou que vous souhaitez absolument utiliser Firefox, alors suivez donc les instructions du fichier [B. Débugger dans vscode : Firefox](./B-debug-vscode-firefox.md) avant de revenir ici_
 
-Il y a plusieurs techniques pour configurer tout ça dans vscode mais la solution la plus simple est la suivante :
-1. **Ouvrez le fichier `src/main.js` dans vscode** (avec <kbd>CTRL</kbd>+<kbd>P</kbd>)
+**On peut s'amuser à lancer un navigateur en mode "debug" en le lançant en ligne de commande, mais le plus simple c'est de laisser vscode lancer le navigateur avec la configuration qui va bien, tout seul, comme un grand.**
+
+Il y a plusieurs techniques pour configurer ça dans vscode mais la solution la plus simple est la suivante :
+1. **Ouvrez le fichier `src/main.js` dans vscode** (_avec_ <kbd>CTRL</kbd>+<kbd>P</kbd>)
 2. **Lancez une session de Debug :**
 	- soit en appuyant sur la touche <kbd>F5</kbd>
 	- soit en ouvrant le menu 'Run' > 'Start Debugging'
@@ -53,12 +53,28 @@ Il y a plusieurs techniques pour configurer tout ça dans vscode mais la solutio
 		]
 	}
 	```
-	Tout est presque bon, seule l'URL n'est pas correcte car le port indiqué n'est pas celui que l'on utilise (_`8080` au lieu de `8000`. Souvenez-vous : notre site est lancé avec la commande `npx serve -l 8000` !_)
-3. **Corrigez donc le numéro de port dans le fichier `launch.json` :**
+	> _**NB :** si vous utilisez chromium, il faut que vous rajoutiez la ligne suivante dans la clé configurations :_
+	> ```diff
+	> "configurations": [
+	> 	{
+	> 		"type": "chrome",
+	> 		"request": "launch",
+	> 		"name": "Launch Chrome against localhost",
+	> 		"url": "http://localhost:8080",
+	> -		"webRoot": "${workspaceFolder}"
+	> +		"webRoot": "${workspaceFolder}",
+	> +		"runtimeExecutable": "/bin/chromium"
+	> 	}
+	> ]
+	> ```
+
+	Tout est presque bon dans ce fichier généré automatiquement, seule l'URL n'est pas correcte car le port indiqué n'est pas celui que l'on utilise (_`8080` au lieu de `8000`. Souvenez-vous : notre site est lancé avec la commande `npx serve -l 8000` !_)
+
+4. **Corrigez donc le numéro de port dans le fichier `launch.json` :**
 	```json
 	"url": "http://localhost:8000",
 	```
-4. **Vous pouvez maintenant lancer la session de debug, en appuyant simplement sur <kbd>F5</kbd>**
+5. **Vous pouvez maintenant lancer la session de debug, en appuyant simplement sur <kbd>F5</kbd>**
 
 	Une nouvelle fenêtre de Chrome s'ouvre alors avec JSteam :
 
@@ -68,7 +84,7 @@ Il y a plusieurs techniques pour configurer tout ça dans vscode mais la solutio
 
 ## B.2. Utilisation du mode debug
 
-Cette nouvelle fenêtre de Chrome (ou Firefox) communique maintenant avec vscode. C'est ce qui va permettre à vscode d'offrir plusieurs fonctionnalités de debug intéressantes :
+**Cette nouvelle fenêtre de Chrome (_ou Chromium ou Firefox_) ouverte en mode "debug" communique maintenant avec vscode. C'est ce qui va permettre à vscode d'offrir plusieurs fonctionnalités de debug intéressantes :**
 
 ### B.2.1. La Debug console
 **La "Debug console" qui s'affiche en bas, correspond plus ou moins à la "Console" de Chrome.**
@@ -98,9 +114,9 @@ Cliquez simplement à gauche d'un numéro de ligne, et une puce rouge s'affiche 
 
 	<img src="images/readme/vscode-stepover.png"/>
 
-5. **Cliquez à nouveau sur le bouton "Step Over (F10)", la valeur de isOpened est maintenant calculée, survolez le nom de la constante directement dans vscode pour voir sa valeur en live !**
+5. **Cliquez à nouveau sur le bouton "Step Over (F10)" : la valeur de `isOpened` est maintenant calculée, survolez le nom de la constante directement dans vscode pour voir sa valeur en live !**
 
-6. **Dans le panneau de gauche** (_affiché automatiquement mais qu'on peut refaire apparaître en tapant <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> puis `View: Show Run and Debug`_) **vous pouvez aussi voir toutes les variables locales**, la call stack, etc. exactement comme dans l'onglet "Sources" des devtools de Chrome !
+6. **Dans le panneau de gauche** (_affiché automatiquement mais qu'on peut refaire apparaître en tapant <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>D</kbd> ou <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> puis `View: Show Run and Debug`_) **vous pouvez aussi voir toutes les variables locales**, la call stack, etc. exactement comme dans l'onglet "Sources" des devtools de Chrome !
 
 	**Continuez** de cliquer sur le bouton "Step Over (F10)" pour suivre le flux d'exécution du code JS.
 

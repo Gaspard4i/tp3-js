@@ -11,10 +11,10 @@ L'extension "Debugger for Firefox" permet de connecter VSCodium/VSCode à Firefo
 
 Attention : VSCodium utilise un store d'extension différent de celui de VSCode : https://open-vsx.org.
 
-Malheureusement la version publiée sur open-vsx (https://open-vsx.org/extension/firefox-devtools/vscode-firefox-debug) n'est [pas à jour _(issue github)_](https://github.com/EclipseFdn/open-vsx.org/issues/966), la procédure pour installer l'extension est donc différente selon que vous utilisez VSCode ou VSCodium :
+Malheureusement la version publiée sur open-vsx (https://open-vsx.org/extension/firefox-devtools/vscode-firefox-debug) n'est [pas à jour _(issue github)_](https://github.com/firefox-devtools/vscode-firefox-debug/issues/214), la procédure pour installer l'extension est donc différente selon que vous utilisez VSCode ou VSCodium :
 
 ### sur VSCodium
-1. **Téléchargez l'extension au format VSIX** depuis le marketplace de microsoft en cliquant sur ce lien : https://marketplace.visualstudio.com/_apis/public/gallery/publishers/firefox-devtools/vsextensions/vscode-firefox-debug/2.9.8/vspackage
+1. **Téléchargez l'extension au format VSIX** depuis le marketplace de microsoft en cliquant sur ce lien : https://marketplace.visualstudio.com/_apis/public/gallery/publishers/firefox-devtools/vsextensions/vscode-firefox-debug/2.9.10/vspackage
 2. **Dans VSCodium ouvrez la palette de commande** en tapant sur <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> puis tapez "VSIX" dans le champ de recherche, vous devriez voir apparaître une option `"Extensions: Install from VSIX..."`. Sélectionnez cette option.
 4. **Dans la fenêtre qui s'est ouverte, sélectionnez le fichier** que vous avez téléchargé à l'étape 1. puis validez
 5. **Une notification en bas à droite de VSCodium** doit vous demander de recharger VSCodium, **cliquez sur le bouton "Reload Now"**
@@ -46,7 +46,7 @@ Il y a plusieurs techniques pour configurer tout ça dans vscode mais la solutio
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Launch localhost",
+				"name": "Debug on Firefox",
 				"type": "firefox",
 				"request": "launch",
 				"reAttach": true,
