@@ -26,18 +26,16 @@ _**Dans la partie C. du TP on a beaucoup amélioré l'organisation de notre code
 
 En fait, le principe des modules c'est normalement d'avoir **des fichiers JS qui puissent être réutilisables facilement** sur d'autres projets.
 
-Or, dans notre code ce n'est pas vraiment le cas car plusieurs de nos modules :
-- font référence à la variable globale `document` (_pour faire des `document.querySelector(...)`_) et vont donc chercher eux-même les balises n'importe où dans la page.
+Or, dans notre code ce n'est pas vraiment le cas car plusieurs de nos modules font référence à la variable globale `document` (_pour faire des `document.querySelector(...)`_) et vont donc chercher eux-même les balises n'importe où dans la page.
 
-	C'est un problème car si on importe par exemple notre module `Help.js` (_formulaire de contact/support_) dans un autre projet, et que ce projet contient plusieurs formulaires différents en plus du formulaire de contact, on ne peut pas garantir que les 2 lignes suivantes iront bien chercher dans le HTML les bonnes balises, c'est à dire celles du formulaire de contact et pas celles d'un autre formulaire de la page :
+C'est un problème car si on importe par exemple notre module `Help.js` (_formulaire de contact/support_) dans un autre projet, et que le code HTML de ce projet contient plusieurs formulaires différents en plus du formulaire de contact, on ne peut pas garantir que les 2 lignes suivantes iront bien chercher dans le HTML les bonnes balises (_c'est à dire celles du formulaire de contact et pas celles d'un autre formulaire de la page_) :
 	```js
 	// src/Help.js
 	const subjectInput = document.querySelector('input[name=subject]');
 	const bodyTextarea = document.querySelector('textarea[name=body]');
 	```
-- Par ailleurs, comme vu au précédent chapitre, on a un autre problème : le module `GameList.js` déclenche des traitements dès qu'on l'importe : le seul fait d'importer le module va ajouter -_automatiquement et dès l'import_- plusieurs écouteurs d'événements `addEventListener` sans qu'on le sache.
 
-**On va donc voir dans ce chapitre comment on peut répondre à ces deux problèmes à l'aide de la POO.**
+**On va donc voir dans ce chapitre comment on peut répondre à ce problème à l'aide de la POO.**
 
 ## D.2. Rappels de syntaxe
 ### D.2.1. class & propriétés publiques
@@ -173,7 +171,7 @@ _**Je vous propose maintenant de créer une classe `View` qui pourra servir de b
 
 	> _**NB :** vous pouvez supprimer la déclaration de la propriété publique `element` dans `HelpView` puisqu'elle est maintenant héritée !_
 
-	> _**Souvenez-vous :** pour appeler le constructeur de la classe parente, c'est la fonction `super()` qu'il faut invoquer. Par ailleurs cette instruction `super()` doit obligatoirement être la première instruction du constructeur de votre classe enfant._
+	> _**Souvenez-vous :** pour appeler le constructeur de la classe parente, c'est la fonction `super()` qu'il faut invoquer. Par ailleurs cette instruction `super` doit obligatoirement être la première instruction du constructeur de votre classe enfant._
 
 3. **Pour vérifier si votre classe fonctionne correctement**, faites appel à la méthode `show` de votre instance `helpView`, dans le `main.js` ajoutez à la fin :
 	```js
@@ -248,7 +246,7 @@ console.log(
 	];
 	```
 
-	Vous voyez qu'on a créé 3 routes pour chacune des vues de notre menu (_et 2 instances de la classe `View` pour la page "Magasin" et "A propos"_).
+	Vous voyez qu'on a créé 3 routes (_sous la forme d'[**objets littéraux** (mdn)](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Object_initializer)_) pour chacune des vues de notre menu (_et 2 instances de la classe `View` pour la page "Magasin" et "A propos"_).
 
 	Pour tester notre Router au fur et à mesure, commencez par commenter la ligne suivante (_c'est le Router qui va maintenant se charger ça_) :
 	```js
@@ -302,12 +300,13 @@ Dans le `main.js` supprimez la ligne :
 ```js
 document.querySelector('.viewTitle').innerHTML = '<h1>MAGASIN</h1>';
 ```
-Dans la fonction `handleMenuLinkClick` supprimez aussi la ligne :
+Dans la fonction `handleMenuLinkClick` supprimez aussi les lignes :
 ```js
+const linkText = event.currentTarget.innerHTML;
 document.querySelector('.viewTitle').innerHTML = `<h1>${linkText}</h1>`;
 ```
 
-Ajoutez maintenant une nouvelle propriété statique `titleElement` au Router qu'on va renseigner dans le `main.js` comme ceci :
+Ajoutez maintenant une nouvelle propriété statique `titleElement` au Router qu'on va renseigner dans le `main.js` (_avant l'appel à `Router.navigate('/about')`_) comme ceci :
 ```js
 Router.titleElement = document.querySelector('.viewTitle');
 ```

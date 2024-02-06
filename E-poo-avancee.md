@@ -32,7 +32,7 @@ class Character {
 }
 ```
 
-Comme les propriétés publiques, le support des propriétés et méthodes privées a été rajouté tout récemment dans ECMAScript (ES2022/ES13 sortie en juin 2022). Le `preset-env` de Babel permet de les utiliser dans notre code !
+Comme les propriétés publiques, le support des propriétés et méthodes privées a été rajouté dans ECMAScript 2022/ES13 sortie en juin 2022. Le `preset-env` de Babel permet de les utiliser dans notre code !
 
 Notez qu'il est tout à fait possible de cumuler le `#` (_private_) avec le mot clé `static`
 
@@ -61,9 +61,9 @@ Pour régler ce problème vous allez :
 
 	> _Souvenez-vous des problèmes de scope de `this` avec `addEventListener` vus tout à l'heure et de la technique d'utiliser les arrow functions_
 - dans la méthode `navigate` de la classe Router, retirez la classe CSS `active` au lien qui correspond à l'ancienne vue affichée (_s'il y en avait une_) et rajoutez la sur le lien qui correspond à la route demandée.
-- nettoyez enfin la fonction `handleMenuLinkClick` des portions de code devenues inutiles
+- nettoyez enfin la fonction `handleMenuLinkClick` de toute la gestion des liens du menu devenue inutile : en principe il ne reste presque plus rien dans la fonction, vous devriez pouvoir migrer le code restant dans la classe Router et supprimer la fonction.
 
-Une fois tout ça fait, si vous rechargez la page, le lien "Support" doit être actif, mais si vous cliquez sur les liens du menu le lien actif doit changer.
+Une fois tout ça fait, si vous rechargez la page, le lien "Support" doit être actif, et si vous cliquez sur les liens du menu le lien actif doit aussi changer.
 
 <img src="images/readme/router-nav-active.png">
 
@@ -137,12 +137,49 @@ _**À partir de maintenant, vous pouvez en principe charger le site depuis n'imp
 ## E.5. GameList
 **Pour finir ce TP je vous propose de convertir le module GameListView.js en classe.**
 
-Au lieu d'avoir dans le `main.js` :
-```js
-const gameListView = new View(document.querySelector('.viewContent > .gameList'));
-```
-On aura :
-```js
-const gameListView = new GameListView(document.querySelector('.viewContent > .gameList'));
-```
-Le but étant de ne plus avoir aucune référence à l'objet global `document` dans notre module `GameListView.js` !
+1. **Avant tout, on va terminer le travail engagé dans la partie [C. Modules](./C-modules.md) : transférez les fonctions `toggleSearchForm` et `handleSearchFormSubmit` dans le module `src/GameListView.js`** créé précédemment.
+
+	Rechargez la page dans votre navigateur, **puis cliquez sur le bouton "loupe"** pour essayer d'afficher le formulaire de recherche : **une erreur se déclenche :**
+
+	<img src="images/readme/module-referenceerror.png">
+
+	> _**NB :** si cette erreur n'est pas captée par vscode comme dans la capture ci-dessus, vérifiez que vous avez bien coché la case "Uncaught Exceptions" comme indiqué dans le point [B.2.2. Les points d'arrêt](./B-debug-vscode.md#b22-les-points-darrêt)_)
+
+	**En fait cette erreur est logique** : on a déplacé dans `GameListView.js` nos 2 fonctions sans remarquer que toutes les deux utilisaient des constantes définies dans le `main.js` : `searchForm` et `toggleSearchButton` (_qui contiennent toutes les deux des Element HTML_).
+
+	On pourrait être tenté d'exporter ces 2 constantes depuis le `main.js` puis de les importer dans `GameListView.js` mais on créerait alors des dépendances croisées entre ces deux fichiers (_`main.js` aurait besoin de `GameListView.js`, et `GameListView.js` aurait besoin de `main.js`_).
+
+	Plutôt que de créer ce genre ["d'inception"](https://fr.wikipedia.org/wiki/Inception), déplacez ces 2 constantes dans le module `GameListView` puis rechargez la page.
+
+	<img src="images/readme/module-referenceerror2.png">
+
+	😕
+
+	Notre code continue de planter, la faute aux deux lignes suivantes du `main.js` :
+
+	```js
+	toggleSearchButton.addEventListener('click', toggleSearchForm);
+	```
+	et
+	```js
+	searchForm.addEventListener('submit', handleSearchFormSubmit);
+	```
+
+	**En effet ces deux lignes utilisent les constantes qu'on vient de déplacer.** On pourrait résoudre le problème en les exportant depuis `GameListView.js` pour les importer ensuite dans le `main.js` mais je vous propose ici plutôt de passer ces deux lignes directement dans le module `GameListView.js` ainsi pas besoin de rajouter des export/import supplémentaires et par ailleurs ça va nous arranger pour la suite de l'exercice.
+
+	> ⚠️⚠️ _**Attention :**_ ⚠️⚠️ _un module ne devrait normalement contenir que des déclarations de fonctions, de classes ou des constantes "simples", et c'est le code qui "importe" le module qui décide ensuite de déclencher ou non, et à quel moment, les fonctions ou méthodes importées._
+	>
+	> _Ici on ajoute dans notre module des instructions qui vont s'exécuter **automatiquement** dès qu'on va l'importer, sans que le module appelant (celui dans lequel on a le `import`) ne fasse quoique ce soit : **c'est une mauvaise pratique qu'il ne faut surtout pas réitérer dans la vraie vie et qu'on va maintenant essayer de résoudre grâce à la POO**._
+
+2. **Une fois cette modification faite, essayez de coder une classe `GameList`.**
+
+	Au lieu d'avoir dans le `main.js` :
+	```js
+	const gameListView = new View(document.querySelector('.viewContent > .gameList'));
+	```
+	On aura :
+	```js
+	const gameListView = new GameListView(document.querySelector('.viewContent > .gameList'));
+	```
+
+	Le but étant de ne plus avoir **aucune référence à l'objet global `document`** dans notre module `GameListView.js` !

@@ -147,71 +147,11 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 
 	> _la fonction renderGameList utilise des informations issues d'autres modules (notamment le tableau `data` et la fonction `renderGameThumbnail`) pensez donc à utiliser les bons import et à faire le ménage des imports désormais inutiles dans le `main.js` !_
 
-5. **Passez enfin les fonctions `toggleSearchForm` et `handleSearchFormSubmit` dans le module `src/GameListView.js`** créé précédemment.
+	Les autres fonctions liées à la liste des jeux (`toggleSearchForm` et `handleSearchFormSubmit`) sont plus complexes à déplacer dans un module à part, on va donc les laisser pour le moment dans le fichier main.js et on y reviendra en toute fin de TP.
 
-	Rechargez la page dans votre navigateur, **puis cliquez sur le bouton "loupe"** pour essayer d'afficher le formulaire de recherche : **une erreur se déclenche :**
+**Une fois tous ces modules créés, vous pouvez constater qu'on a considérablement réduit la taille du fichier `main.js`.**
 
-	<img src="images/readme/module-referenceerror.png">
-
-	> _**NB :** si cette erreur n'est pas captée par vscode comme dans la capture ci-dessus, vérifiez que vous avez bien coché la case "Uncaught Exceptions" comme indiqué dans le point [B.2.2. Les points d'arrêt](./B-debug-vscode.md#b22-les-points-darrêt)_)
-
-	**En fait cette erreur est logique** : on a déplacé dans `GameListView.js` nos 2 fonctions sans remarquer que toutes les deux utilisaient des constantes définies dans le `main.js` : `searchForm` et `toggleSearchButton` (_qui sont 2 Element HTML_)
-
-	On pourrait être tenté d'exporter ces 2 constantes depuis le `main.js` puis de les importer dans `GameListView.js` mais on créerait alors des dépendances croisées entre ces deux fichiers (_`main.js` aurait besoin de `GameListView.js`, et `GameListView.js` aurait besoin de `main.js`_).
-
-	Plutôt que de créer ce genre ["d'inception"](https://fr.wikipedia.org/wiki/Inception), déplacez ces 2 constantes dans le module `GameListView` puis rechargez la page.
-
-	<img src="images/readme/module-referenceerror2.png">
-
-	😕
-
-	Notre code continue de planter, la faute aux deux lignes suivantes du `main.js` :
-
-	```js
-	toggleSearchButton.addEventListener('click', toggleSearchForm);
-	```
-	et
-	```js
-	searchForm.addEventListener('submit', handleSearchFormSubmit);
-	```
-
-	**En effet ces deux lignes utilisent les constantes qu'on vient de déplacer.** On pourrait résoudre le problème en les exportant depuis `GameListView.js` pour les importer ensuite dans le `main.js` mais je vous propose ici plutôt de passer ces deux lignes directement dans le module `GameListView.js` ainsi pas besoin de rajouter des export/import supplémentaires et par ailleurs ça va nous arranger pour la suite des exercices.
-
-	> ⚠️⚠️ _**Attention :**_ ⚠️⚠️ _un module ne devrait normalement contenir que des déclarations de fonctions, de classes ou des constantes "simples", et c'est le code qui "importe" le module qui décide de déclencher ou non, et à quel moment, les fonctions ou méthodes importées._
-	>
-	> _Ici on ajoute dans notre module des instructions qui vont s'exécuter automatiquement dès qu'on va l'importer, sans que le module appelant (celui dans lequel on a le `import`) ne fasse quoique ce soit : **c'est une mauvaise pratique qu'il ne faut surtout pas réitérer dans la vraie vie et qu'on essaiera de résoudre grâce à la POO dans le prochain chapitre**._
-
-
-	Une fois tout déplacé, ne devraient rester dans votre `main.js` que les lignes suivantes :
-
-	```js
-	import renderGameList from './GameListView.js';
-	import { handleHelpFormSubmit } from './HelpView.js';
-	import { handleMenuLinkClick } from './Router.js';
-
-	// Activation du lien du menu
-	document.querySelector('.mainMenu .gameListLink').classList.add('active');
-	// Affichage du titre h1
-	document.querySelector('.viewTitle').innerHTML = '<h1>MAGASIN</h1>';
-	// Modification du footer
-	document.querySelector('body > footer > div:nth-of-type(2)').innerHTML +=
-		' / CSS inspirée de <a href="https://store.steampowered.com/">steam</a>';
-	// On affiche la gameList par défaut
-	document.querySelector('.gameList').classList.add('active');
-
-	// on écoute le clic sur tous les liens du menu
-	const menuLinks = document.querySelectorAll('.mainMenu a');
-	menuLinks.forEach(link => link.addEventListener('click', handleMenuLinkClick));
-
-	// rendu initial de la liste des jeux
-	renderGameList();
-
-	// on écoute la soumission du formulaire de contact
-	const helpForm = document.querySelector('.helpForm');
-	helpForm.addEventListener('submit', handleHelpFormSubmit);
-	```
-
-**On vient de le voir, répartir son code dans des modules, si on a pas pensé en amont aux dépendances des différentes fonctions les unes par rapport aux autres peut être parfois compliqué ! La partie sur la POO devrait nous aider à améliorer un peu tout ça.**
+Cette nouvelle organisation du code présente plusieurs avantages : avoir plusieurs petits fichiers plutôt qu'un seul gros facilite à la fois **la maintenance future de notre application**, et permet aussi d'éventuellement **réutiliser nos modules dans d'autres projets** !
 
 ## C.4. Webpack : Utiliser un bundler
 
@@ -219,7 +159,7 @@ Passez successivement (_pensez à tester à chaque étape que tout fonctionne to
 
 **Pour rendre nos modules compatibles avec les anciens navigateurs, il faut utiliser un "bundler".**
 
-Le but d'un "bundler" est de rassembler tous les scripts de notre application (toutes les dépendances) en un seul gros fichier JS. Le navigateur n'ayant plus alors qu'un seul fichier à charger, il n'a plus à se soucier de charger lui-même les modules.
+Le but d'un "bundler" est de rassembler tous les scripts de notre application (_toutes les "dépendances"_) en **un seul gros fichier JS**. Le navigateur n'ayant plus qu'un seul fichier à charger, il n'a plus à se soucier de charger lui-même les modules.
 
 Comme vu en cours, le bundler le plus employé en JS est [Webpack](https://webpack.js.org/), c'est donc cet outil que l'on va installer et configurer.
 
