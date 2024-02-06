@@ -62,7 +62,7 @@ Comme dans le précédent TP lancez un serveur HTTP et la compilation du projet 
 	npx serve -l 8000
 	```
 
-2. **Lancez la compilation de votre projet** dans un **deuxième** [terminal splitté](https://code.visualstudio.com/docs/editor/integrated-terminal#_terminal-splitting) (*le `watch` et `npx serve` doivent tourner en parallèle*) :
+2. **Lancez la compilation de votre projet** dans un **deuxième** [terminal splitté](https://code.visualstudio.com/docs/terminal/basics#_groups-split-panes) (*le `watch` et `npx serve` doivent tourner en parallèle*) :
 	```bash
 	npm run watch
 	```
