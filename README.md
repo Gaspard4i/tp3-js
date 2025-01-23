@@ -1,6 +1,6 @@
 <img src="images/readme/header.jpg">
 
-## Objectifs
+## 🎯 Objectifs
 - Mettre en oeuvre le système de modules
 - Savoir faire de la POO en JS
 - Débugger et développer plus facilement
