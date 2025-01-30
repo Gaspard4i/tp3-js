@@ -18,11 +18,18 @@ _**Pour débugger notre code, on a jusqu'ici toujours utilisé les devtools int�
 
 **Pour pouvoir debugger directement dans vscode, vscode a besoin d'ouvrir un navigateur en mode debug, ce qui va lui permettre de communiquer avec les devtools de ce navigateur.**
 
-Le plus simple est d'utiliser Chrome ou Chromium qui fonctionnent par défaut avec vscode (_config spécifique pour Chromium plus bas dans ce readme_). Il est aussi possible d'utiliser Firefox mais la configuration du debug dans Firefox est plus complexe et peut prendre du temps. Si vous n'y êtes pas allergique, je vous conseille d'utiliser Chrome/Chromium.
+Le plus simple est d'utiliser Chrome ou Chromium qui fonctionnent par défaut avec vscode (_config spécifique pour Chromium plus bas dans ce readme_).
 
-> _Si vous n'avez pas Chrome ni Chromium ou que vous souhaitez absolument utiliser Firefox, alors suivez donc les instructions du fichier [B. Débugger dans vscode : Firefox](./B-debug-vscode-firefox.md) avant de revenir ici_
+> <details><summary>🚧 <em>Il est aussi possible d'utiliser Firefox mais je ne vous le recommande pas...</em></summary>
+>
+> _la configuration du debug dans Firefox est plus complexe et peut prendre du temps. Par ailleurs l'extension Firefox a longtemps été moins maintenue ce qui pose parfois des problèmes d'installation/configuration. Si vous n'y êtes pas allergique, je vous conseille vivement d'utiliser Chrome/Chromium qui est configuré par défaut dans vscode._
+>
+> _Si vous n'avez pas Chrome utilisez Chromium (voir plus bas)._
+>
+> _Si vous souhaitez absolument utiliser Firefox, alors suivez donc les instructions de la doc officielle https://github.com/firefox-devtools/vscode-firefox-debug?tab=readme-ov-file#getting-started avant de revenir ici_
+> </details>
 
-**On peut s'amuser à lancer un navigateur en mode "debug" en le lançant en ligne de commande, mais le plus simple c'est de laisser vscode lancer le navigateur avec la configuration qui va bien, tout seul, comme un grand.**
+**On peut s'amuser à lancer Chrome/Chromium en mode "debug" en le lançant en ligne de commande, mais le plus simple c'est de laisser vscode lancer le navigateur avec la configuration qui va bien, tout seul, comme un grand.**
 
 Il y a plusieurs techniques pour configurer ça dans vscode mais la solution la plus simple est la suivante :
 1. **Ouvrez le fichier `src/main.js` dans vscode** (_avec_ <kbd>CTRL</kbd>+<kbd>P</kbd>)
@@ -53,7 +60,11 @@ Il y a plusieurs techniques pour configurer ça dans vscode mais la solution la 
 		]
 	}
 	```
-	> _**NB :** si vous utilisez chromium, il faut que vous rajoutiez la ligne suivante dans la clé configurations :_
+	Tout est presque bon dans ce fichier généré automatiquement, seule l'URL n'est pas correcte car le port indiqué n'est pas celui que l'on utilise (_`8080` au lieu de `8000`. Souvenez-vous : notre site est lancé avec la commande `npx serve -l 8000` !_)
+
+	> <details><summary>⚠️ <em>Si vous utilisez <strong>Chromium</strong> et pas Chrome il faut OBLIGATOIREMENT modifier un peu la config...</em></summary>
+	>
+	> _En effet, il faut préciser le chemin vers l'exécutable en ajoutant la clé `"runtimeExecutable"` dans la clé `"configurations"` :_
 	> ```diff
 	> "configurations": [
 	> 	{
@@ -67,8 +78,7 @@ Il y a plusieurs techniques pour configurer ça dans vscode mais la solution la 
 	> 	}
 	> ]
 	> ```
-
-	Tout est presque bon dans ce fichier généré automatiquement, seule l'URL n'est pas correcte car le port indiqué n'est pas celui que l'on utilise (_`8080` au lieu de `8000`. Souvenez-vous : notre site est lancé avec la commande `npx serve -l 8000` !_)
+	> </details>
 
 4. **Corrigez donc le numéro de port dans le fichier `launch.json` :**
 	```json
@@ -80,7 +90,7 @@ Il y a plusieurs techniques pour configurer ça dans vscode mais la solution la 
 
 	<img src="images/readme/vscode-run.png">
 
-	> _**NB :** cette fenêtre de Chrome est ouverte en mode debug et avec un compte utilisateur "vide", c'est donc normal que vous ne retrouviez pas vos extensions et paramétrages_
+	> ℹ️ _Cette fenêtre de Chrome est ouverte en mode debug et avec un compte utilisateur "vide", c'est donc normal que vous ne retrouviez pas vos extensions et paramétrages_
 
 ## B.2. Utilisation du mode debug
 
@@ -138,9 +148,9 @@ Cliquez simplement à gauche d'un numéro de ligne, et une puce rouge s'affiche 
 
 **Une fois que vous avez testé ça, pensez à enlever le point d'arrêt de la ligne 92 !**
 
-> _**NB1 :** même si vous utilisez le debug dans vscode, **les devtools de Chrome continuent de fonctionner** et sont même **synchronisés avec vscode** (les actions dans une interface se répercutent dans l'autre !)_
+> ℹ️ _Même si vous utilisez le debug dans vscode, **les devtools de Chrome continuent de fonctionner** et sont même **synchronisés avec vscode** (les actions dans une interface se répercutent dans l'autre !)_
 
-> _**NB2 :** Si vous souhaitez plus d'informations sur les possibilités offertes par ce mode debug, je vous invite à faire un tour sur la **doc officielle** ici : https://code.visualstudio.com/docs/nodejs/browser-debugging_
+> ℹ️ _Si vous souhaitez plus d'informations sur les possibilités offertes par ce mode debug, je vous invite à faire un tour sur la **doc officielle** ici : https://code.visualstudio.com/docs/nodejs/browser-debugging_
 
 ## Étape suivante <!-- omit in toc -->
 Vscode étant maintenant configuré pour vous permettre de débugger plus facilement, entrons dans le vif du sujet avec la partie [C. les modules](C-modules.md)

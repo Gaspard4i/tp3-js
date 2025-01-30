@@ -5,8 +5,8 @@
 _**Dans cette partie je vous propose quelques exercices complémentaires pour améliorer notre classe Router.**_
 
 ## Sommaire <!-- omit in toc -->
-- [E.1. private : Router et menu](#e1-private-router-et-menu)
-	- [E.1.1. Syntaxe : les propriétés privées](#e11-syntaxe-les-propriétés-privées)
+- [E.1. private : Router et menu](#e1-private--router-et-menu)
+	- [E.1.1. Syntaxe : les propriétés privées](#e11-syntaxe--les-propriétés-privées)
 	- [E.1.2. Mise en oeuvre](#e12-mise-en-oeuvre)
 - [E.3. History API](#e3-history-api)
 - [E.4. Le deep linking](#e4-le-deep-linking)
@@ -143,7 +143,7 @@ _**À partir de maintenant, vous pouvez en principe charger le site depuis n'imp
 
 	<img src="images/readme/module-referenceerror.png">
 
-	> _**NB :** si cette erreur n'est pas captée par vscode comme dans la capture ci-dessus, vérifiez que vous avez bien coché la case "Uncaught Exceptions" comme indiqué dans le point [B.2.2. Les points d'arrêt](./B-debug-vscode.md#b22-les-points-darrêt)_)
+	> ℹ️ _**NB :** si cette erreur n'est pas captée par vscode comme dans la capture ci-dessus, vérifiez que vous avez bien coché la case "Uncaught Exceptions" comme indiqué dans le point [B.2.2. Les points d'arrêt](./B-debug-vscode.md#b22-les-points-darrêt)_)
 
 	**En fait cette erreur est logique** : on a déplacé dans `GameListView.js` nos 2 fonctions sans remarquer que toutes les deux utilisaient des constantes définies dans le `main.js` : `searchForm` et `toggleSearchButton` (_qui contiennent toutes les deux des Element HTML_).
 

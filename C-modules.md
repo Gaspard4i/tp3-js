@@ -4,7 +4,7 @@
 
 _**Notre application JSteam a pas mal progressé lors du précédent TP (navigation entre plusieurs pages, formulaire de contact, formulaire de recherche et de tri des jeux, ...).**_
 
-Malheureusement toutes ces fonctionnalités ont été rajoutées dans le seul fichier `main.js` : **ça commence par conséquent à être un peu le "bazar" puisque tout est mélangé.**
+Malheureusement tout notre code réside dans le seul fichier `main.js` : **ça commence par conséquent à être un peu le "bazar" puisque tout est mélangé.**
 
 **L'objectif de ce chapitre va être de nous permettre de mieux organiser notre code en le répartissant dans plusieurs fichiers grâce aux modules ES6.**
 
@@ -12,9 +12,9 @@ Malheureusement toutes ces fonctionnalités ont été rajoutées dans le seul fi
 - [C.1. Rappels](#c1-rappels)
 - [C.2. Support natif dans les navigateurs modernes](#c2-support-natif-dans-les-navigateurs-modernes)
 - [C.3. Réorganisation du code](#c3-réorganisation-du-code)
-- [C.4. Webpack : Utiliser un bundler](#c4-webpack-utiliser-un-bundler)
-- [C.5. Webpack : mode dev vs mode prod](#c5-webpack-mode-dev-vs-mode-prod)
-- [C.6. Webpack : Live reload](#c6-webpack-live-reload)
+- [C.4. Webpack : Utiliser un bundler](#c4-webpack--utiliser-un-bundler)
+- [C.5. Webpack : mode dev vs mode prod](#c5-webpack--mode-dev-vs-mode-prod)
+- [C.6. Webpack : Live reload](#c6-webpack--live-reload)
 
 ## C.1. Rappels
 **Comme vu en cours, le système de modules ES6 permet de répartir son code dans plusieurs fichiers et de gérer les dépendances de l'application fichier par fichier** (_plutôt que d'avoir à maintenir une longue liste de balises `<script>` dans le fichier html_).
@@ -60,14 +60,14 @@ Le [support navigateur des modules ES6](https://caniuse.com/#feat=es6-module) es
 
 Dans un premier temps nous ferons de toute façon abstraction de ces questions de compatibilité et nous nous appuierons sur le fait que **les dernières versions de Chromium/Chrome et de FireFox supportent nativement les modules ES6**.
 
-Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec les vieux navigateurs grâce à Webpack.
+Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec les vieux navigateurs grâce à un bundler (webpack).
 
 ## C.2. Support natif dans les navigateurs modernes
 1.  **Avant d'utiliser le système de modules et les instructions `import`/`export`, il faut d'abord indiquer au navigateur que notre fichier `main.js` est lui-même un module.** Pour cela, ajoutez un attribut `type="module"` dans la balise `<script>` du fichier `index.html` :
 	```html
-	<script type="module" src="build/main.js"></script>
+	<script src="build/main.js" type="module"></script>
 	```
-	> _**NB :** Vous noterez que l'attribut `"defer"` n'est plus nécessaire car il est implicite pour les modules !_
+	> ℹ️ _Vous noterez que l'attribut `"defer"` n'est plus nécessaire car il est implicite pour les modules !_
 
 2. **Il faut ensuite configurer Babel.** En effet, par défaut Babel va chercher à compiler toutes les instructions `import` et `export` qu'il trouvera pour les transformer en code compatible ES5. Ici on veut utiliser le support natif du navigateur pour les modules ES6, par conséquent il faut indiquer à Babel de ne pas compiler les `import`/`export`.<br>
 	Modifiez le fichier `.babelrc` comme suit (**attention: notez bien le tableau dans un tableau !**) :
@@ -98,9 +98,11 @@ Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec le
 
 4.  **Créez votre premier module en externalisant la constante `data` dans un module ES6 distinct `src/data.js`.**
 
-	> _**NB1 :** Rappelez-vous : tout ce qui est défini dans un module (variables, fonctions, classes), n'existe qu'à l'intérieur de ce module **SAUF** s'il est exporté, puis **importé** dans un autre fichier._
+	> ℹ️ _Rappelez-vous : tout ce qui est défini dans un module (variables, fonctions, classes), n'existe qu'à l'intérieur de ce module **SAUF** s'il est exporté, puis **importé** dans un autre fichier._
 
-	> _**NB2 :** Exporter **par défaut** une constante sur la même ligne que sa création est interdit (cf. la Bible : [stackoverflow](https://stackoverflow.com/a/36261387)):_
+	> <details><summary>⚠️ <em>Exporter <strong>par défaut</strong> une constante sur la même ligne que sa création est interdit !!</em></summary>
+	>
+	> _Source la Bible : [stackoverflow](https://stackoverflow.com/a/36261387) :_
 	> ```js
 	> export default const data = [...]; // ERREUR !
 	> ```
@@ -110,18 +112,23 @@ Nous verrons plus tard dans le TP comment rendre nos modules compatibles avec le
 	> export default data; // OK !
 	> ```
 
-	> _**NB3 :** Un export nommé (pas par défaut) d'une const est en revanche autorisé :_
+	> <details><summary>ℹ️ <em>... par contre un export nommé (pas par défaut) d'une const est autorisé...</em></summary>
+	>
 	> ```js
 	> export const data = [...]; // OK !
 	> ```
+	> </details>
 
-	> _**NB4 :** Cette restriction ne s'applique pas aux fonctions et aux classes ; on peut tout à fait faire :_
+	> <details><summary>ℹ️ <em>... cette restriction ne s'applique pas aux fonctions et aux classes !</em></summary>
+	>
+	> _On peut tout à fait faire :_
 	> ```js
 	> export default class Component {...} // OK !
 	> ```
 	> ```js
 	> export default function checkValue(value){...} // OK aussi !
 	> ```
+	> </details>
 
 5. **Compilez votre code et testez la page dans le navigateur** : le résultat doit être identique à celui obtenu précédemment :
 
@@ -138,14 +145,14 @@ Maintenant que vous avez réussi à passer `data` dans un module distinct, on va
 Passez successivement (_pensez à tester à chaque étape que tout fonctionne toujours !_) :
 1. **la fonction `handleMenuLinkClick` dans un module `src/Router.js`** (_export nommé ie. sans le mot clé `défault`_)
 
-	> _**NB :** On ne déplace ici que la **déclaration** de la fonction, **PAS** le `addEventListener` qui y fait référence !_
+	> ⚠️ _On ne déplace ici que la **déclaration** de la fonction, **PAS** le `addEventListener` qui y fait référence !_
 	>
-	> _Même principe pour les prochaines fonctions à déplacer ci-dessous_
+	> _Même principe pour les prochaines fonctions à déplacer ci-dessous._
 2. **la fonction `handleHelpFormSubmit` dans un module `src/HelpView.js`** (_export nommé ie. sans le mot clé `défault`_)
 3. **la fonction `renderGameThumbnail` dans un module `src/renderGameThumbnail.js`** (_export default_)
 4. **la fonction `renderGameList` (_export default_) dans un module `src/GameListView.js`**
 
-	> _la fonction renderGameList utilise des informations issues d'autres modules (notamment le tableau `data` et la fonction `renderGameThumbnail`) pensez donc à utiliser les bons import et à faire le ménage des imports désormais inutiles dans le `main.js` !_
+	> 💡 _la fonction renderGameList utilise des informations issues d'autres modules (notamment le tableau `data` et la fonction `renderGameThumbnail`) pensez donc à utiliser les bons import et à faire le ménage des imports désormais inutiles dans le `main.js` !_
 
 	Les autres fonctions liées à la liste des jeux (`toggleSearchForm` et `handleSearchFormSubmit`) sont plus complexes à déplacer dans un module à part, on va donc les laisser pour le moment dans le fichier main.js et on y reviendra en toute fin de TP.
 
@@ -173,14 +180,14 @@ Comme vu en cours, le bundler le plus employé en JS est [Webpack](https://webpa
 	```
 4. **Créez à la racine de votre TP un fichier `webpack.config.js`** (au même niveau que le `package.json` et le `.babelrc`) et placez y le code suivant :
 	```js
-	const path = require('path');
+	import path from 'path';
 
 	module.exports = {
 		// Fichier d'entrée :
 		entry: './src/main.js',
 		// Fichier de sortie :
 		output: {
-			path: path.resolve(__dirname, './build'),
+			path: path.resolve(import.meta.dirname, './build'),
 			filename: 'main.bundle.js',
 		},
 		// compatibilité anciens navigateurs (si besoin du support de IE11 ou android 4.4)
@@ -220,7 +227,7 @@ Vous l'aurez peut-être remarqué, les deux scripts que l'on vient d'ajouter au 
 1. **Renommez** le fichier `build/main.bundle.js` en `build/main.bundle.dev.js`
 2. Stoppez la commande `npm run watch` (<kbd>CTRL</kbd>+<kbd>C</kbd>) et **lancez à la place la commande `npm run build`**.
 3. **Comparez** le fichier `main.bundle.js` généré avec le mode "production" et le `main.bundle.dev.js` qui avait été généré en mode "development". A votre avis, quelle est l'utilité du mode "production" ?
-4. **Demandez à l'enseignant.e qui encadre votre séance TP si vous avez vu juste avant de passer à la suite.**
+4. **Demandez à l'enseignant·e qui encadre votre séance TP si vous avez vu juste avant de passer à la suite.**
 
 ## C.6. Webpack : Live reload
 **Pour terminer ce chapitre sur les modules et puisqu'on vient d'installer webpack, je vous propose d'utiliser une fonctionnalité de webpack qui va nous simplifier la vie à savoir le ["webpack dev server" _(documentation)_](https://webpack.js.org/configuration/dev-server/).**
@@ -243,9 +250,9 @@ Avec **webpack dev server** on va pouvoir lancer les 2 à la fois, en une seule 
 	npm i -D webpack-dev-server
 	```
 
-	> _**NB1 :** `npm i ...` est un raccourci pour `npm install ...`_
+	> ℹ️ _`npm i ...` est un raccourci pour `npm install ...`_
 
-	> _**NB2 :** `-D` est un raccourci pour l'option `--save-dev` qu'on avait utilisé jusque là_
+	> ℹ️ _`-D` est un raccourci pour l'option `--save-dev` qu'on avait utilisé jusque là_
 
 3. **Modifiez le fichier `webpack.config.js` en y ajoutant les lignes suivantes :**
 
@@ -267,13 +274,13 @@ Avec **webpack dev server** on va pouvoir lancer les 2 à la fois, en une seule 
 		},
 		```
 
-3. **Enfin, créez un script npm dans le `package.json` pour nous permettre de lancer webpack en mode "dev server" plus facilement** :
+4. **Enfin, créez un script npm dans le `package.json` pour nous permettre de lancer webpack en mode "dev server" plus facilement** :
 	```json
 	"start": "webpack serve --mode=development"
 	```
 
-	> _**NB :** la clé "start" pour les scripts npm est une clé "spéciale" qui permet de se passer du mot `run` lorsqu'on lance la commande : pas besoin de faire `npm run start`, on peut écrire juste `npm start` (cf. point suivant)_
-4. **Lancez maintenant la commande :**
+	> ℹ️ _la **clé "start"** pour les scripts npm est une clé "spéciale" qui permet de se passer du mot `run` lorsqu'on lance la commande : pas besoin de faire `npm run start`, on peut écrire juste `npm start` (cf. point suivant)_
+5. **Lancez maintenant la commande :**
 	```bash
 	npm start
 	```

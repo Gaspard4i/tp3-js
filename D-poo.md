@@ -10,13 +10,13 @@ _**Dans cette partie du TP nous allons faire un peu de POO pour essayer d'améli
 ## Sommaire <!-- omit in toc -->
 - [D.1. Notre problème](#d1-notre-problème)
 - [D.2. Rappels de syntaxe](#d2-rappels-de-syntaxe)
-	- [D.2.1. class \& propriétés publiques](#d21-class-propriétés-publiques)
+	- [D.2.1. class \& propriétés publiques](#d21-class--propriétés-publiques)
 	- [D.2.2. méthodes](#d22-méthodes)
 - [D.3. La classe HelpView](#d3-la-classe-helpview)
-- [D.4. Héritage : La classe View](#d4-héritage-la-classe-view)
-- [D.5. _Propriétés et méthodes statiques :_ La classe Router](#d5-propriétés-et-méthodes-statiques-la-classe-router)
+- [D.4. Héritage : La classe View](#d4-héritage--la-classe-view)
+- [D.5. _Propriétés et méthodes statiques :_ La classe Router](#d5-propriétés-et-méthodes-statiques--la-classe-router)
 	- [D.5.1. Principe du Routing](#d51-principe-du-routing)
-	- [D.5.2 Rappels de syntaxe : `static`](#d52-rappels-de-syntaxe-static)
+	- [D.5.2 Rappels de syntaxe : `static`](#d52-rappels-de-syntaxe--static)
 	- [D.5.3. La classe `Router`](#d53-la-classe-router)
 	- [D.5.4. Router et viewTitle](#d54-router-et-viewtitle)
 
@@ -108,7 +108,7 @@ Le principe sera le suivant :
 1. on instanciera notre classe `HelpView` dans le `main.js`, en envoyant au constructeur l'élément HTML (_la balise_) dans laquelle se trouve le formulaire (`<article class="help">` _cf. [l. 56 du fichier `index.html`](https://gitlab.univ-lille.fr/js/tp3/-/blob/main/index.html#L58-70)_).
 2. c'est dans le constructeur de la classe qu'on ajoutera l'écouteur d'événement "submit" sur le formulaire contenu dans la balise passée en paramètre
 
-**Si le principe est compris passons à la pratique** (_dans le cas contraire, demandez  de l'aide à votre encadrant.e de TP_) :
+**Si le principe est compris passons à la pratique** (_dans le cas contraire, demandez  de l'aide à votre encadrant·e de TP_) :
 
 1. **Dans `HelpView.js`, créez une classe nommée `HelpView`** (_à côté de la fonction `handleHelpFormSubmit`_)
 2. **Ajoutez-y un constructeur** qui recevra un paramètre nommé `element`
@@ -117,9 +117,9 @@ Le principe sera le suivant :
 
 	Remplacez y toutes les références à l'objet `document` par la propriété publique `element`
 
-	> _**Rappel :** notre paramètre `element` contient une instance de la classe `Element` (un élément HTML) il est donc possible d'appeler dessus la méthode `querySelector()`_
+	> ℹ️ _**Rappel :** notre paramètre `element` contient une instance de la classe `Element` (un élément HTML) il est donc possible d'appeler dessus la méthode `querySelector()`_
 
-	> _**Rappel :** dans une classe en JS, le mot clé `this` est toujours obligatoire pour accéder à une propriété ou une méthode_
+	> ℹ️ _**Rappel :** dans une classe en JS, le mot clé `this` est toujours obligatoire pour accéder à une propriété ou une méthode_
 
 5. **Dans le constructeur de la classe, ajoutez un écouteur d'événement `'submit'` sur le formulaire contenu dans la balise `this.element` et qui déclenche la méthode `handleSubmit`**
 
@@ -133,9 +133,9 @@ Le principe sera le suivant :
 
 	Une fois l'écouteur d'événement ajouté, vous pouvez supprimer ces 2 lignes du `main.js`.
 
-	> _**Attention 1 :** la classe `HelpView` ne doit plus utiliser la variable globale `document` !_
+	> ⚠️ _**Attention 1 :** la classe `HelpView` ne doit plus utiliser la variable globale `document` !_
 
-	> _**Attention 2 :** lorsqu'on utilise `addEventListener()` dans une classe on se retrouve confrontés à des problèmes de scope de `this` : dans la méthode déclenchée lorsque l'événement se produit, la valeur de `this` est "transformée" : ce n'est plus notre instance mais ça devient l'élément HTML qui a déclenché l'événement (dans notre cas la balise `<form>`)._
+	> ⚠️ _**Attention 2 :** lorsqu'on utilise `addEventListener()` dans une classe on se retrouve confrontés à des problèmes de scope de `this` : dans la méthode déclenchée lorsque l'événement se produit, la valeur de `this` est "transformée" : ce n'est plus notre instance mais ça devient l'élément HTML qui a déclenché l'événement (dans notre cas la balise `<form>`)._
 	>
 	> Pour éviter ces problèmes quand on travaille avec des classes le plus simple est de préférer l'emploi de **arrow functions** :
 	> ```js
@@ -169,9 +169,9 @@ _**Je vous propose maintenant de créer une classe `View` qui pourra servir de b
 
 2. **Faites hériter la classe `HelpView` de la classe `View`**
 
-	> _**NB :** vous pouvez supprimer la déclaration de la propriété publique `element` dans `HelpView` puisqu'elle est maintenant héritée !_
+	> ℹ️ _Vous pouvez supprimer la déclaration de la propriété publique `element` dans `HelpView` puisqu'elle est maintenant héritée !_
 
-	> _**Souvenez-vous :** pour appeler le constructeur de la classe parente, c'est la fonction `super()` qu'il faut invoquer. Par ailleurs cette instruction `super` doit obligatoirement être la première instruction du constructeur de votre classe enfant._
+	> 💡 _**Souvenez-vous :** pour appeler le constructeur de la classe parente, c'est la fonction `super()` qu'il faut invoquer. Par ailleurs cette instruction `super` doit obligatoirement être la première instruction du constructeur de votre classe enfant._
 
 3. **Pour vérifier si votre classe fonctionne correctement**, faites appel à la méthode `show` de votre instance `helpView`, dans le `main.js` ajoutez à la fin :
 	```js
